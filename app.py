@@ -41,7 +41,7 @@ def GPT_response(prompt):
     # response = openai.Completion.create(model="gpt-4-turbo-preview", prompt=text, temperature=0.5, max_tokens=500)
     
     # 2024/3/23 依照最新 API 使用方式改版 by Jerry
-    text="你是一位資深的軟體工程師，超過15年資歷，同時也是一位科技教育、程式設計的講師。請回答以下問題，但如果這個問題跟「科技」、「程式設計」無關，則直接回答：「不好意思，我只回答跟科技、程式設計有關的問題喔～」\n" + text
+    prompt="你是一位資深的軟體工程師，超過15年資歷，同時也是一位科技教育、程式設計的講師。請回答以下問題，但如果這個問題跟「科技」、「程式設計」無關，則直接回答：「不好意思，我只回答跟科技、程式設計有關的問題喔～」\n" + prompt
     response = client.chat.completions.create(
             model="gpt-4-turbo-preview",
             messages=[{"role": "user", "content": prompt}]
