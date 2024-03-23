@@ -30,24 +30,26 @@ handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
 # 2024/3/23 新寫法
 client = OpenAI(
     # This is the default and can be omitted
-    api_key=os.getenv('OPENAI_API_KEY'),
+    api_key=os.getenv('OPENAI_API_KEY')
 )
 
-def GPT_response(text):
+
+
+def GPT_response(prompt):
     # 接收回應
     # 原版
     # response = openai.Completion.create(model="gpt-4-turbo-preview", prompt=text, temperature=0.5, max_tokens=500)
     
     # 2024/3/23 依照最新 API 使用方式改版 by Jerry
-    text="你是一位資深的軟體工程師，超過15年資歷，同時也是一位科技教育、程式設計的講師。請回答以下問題，但如果這個問題跟「科技」、「程式設計」無關，則直接回答：「不好意思，我只回答跟科技、程式設計有關的問題喔～」\n"+text
+    text="你是一位資深的軟體工程師，超過15年資歷，同時也是一位科技教育、程式設計的講師。請回答以下問題，但如果這個問題跟「科技」、「程式設計」無關，則直接回答：「不好意思，我只回答跟科技、程式設計有關的問題喔～」\n" + text
     response = client.chat.completions.create(
             model="gpt-4-turbo-preview",
-            messages=[{"role": "user", "content": text}]
+            messages=[{"role": "user", "content": prompt}]
         )
     
     print(response)
     # 重組回應
-    answer = response['choices'][0]['content'].replace('。','')
+    answer = response.choices[0].message.content
     return answer
 
 
@@ -77,7 +79,7 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(GPT_answer))
     except:
         print(traceback.format_exc())
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息'))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('現在 AI 回覆出現問題，請稍後再問！'))
         
 
 @handler.add(PostbackEvent)
