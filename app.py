@@ -11,9 +11,10 @@ from linebot.models import *
 #======python的函數庫==========
 import tempfile, os
 import datetime
-import openai
 import time
 import traceback
+
+from openai import OpenAI
 #======python的函數庫==========
 
 app = Flask(__name__)
